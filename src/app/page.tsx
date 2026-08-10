@@ -14,9 +14,9 @@ export default function Home() {
     { id: 1, name: "Ganga View Luxury Villa", price: 12000, type: "Villas", guests: 6, beds: 3, baths: 3, location: "Tapovan", rating: 4.9, img: "/images/prop1.jpg", tags: ["Ganga View", "Pool"] },
     { id: 2, name: "Serene Forest Retreat", price: 8500, type: "Apartments", guests: 4, beds: 2, baths: 2, location: "Shivpuri", rating: 4.8, img: "/images/prop2.jpg", tags: [] },
     { id: 3, name: "Boutique Mountain Studio", price: 5000, type: "Apartments", guests: 2, beds: 1, baths: 1, location: "Laxman Jhula", rating: 4.7, img: "/images/prop5.jpg", tags: ["Ganga View"] },
-    { id: 4, name: "Riverside Luxury Tent", price: 6500, type: "Glamping", guests: 2, beds: 1, baths: 1, location: "Neelkanth Road", rating: 4.9, img: "/images/prop4.jpg", tags: ["Ganga View"] },
-    { id: 5, name: "Heritage Homestay", price: 4000, type: "Apartments", guests: 4, beds: 2, baths: 2, location: "Swarg Ashram", rating: 4.6, img: "/images/prop7.jpg", tags: [] },
-    { id: 6, name: "Premium Pool Villa", price: 18000, type: "Villas", guests: 8, beds: 4, baths: 4, location: "Narendra Nagar", rating: 5.0, img: "/images/prop10.jpg", tags: ["Pool"] },
+    { id: 4, name: "Riverside Cafe & Stay", price: 6500, type: "Glamping", guests: 2, beds: 1, baths: 1, location: "Neelkanth Road", rating: 4.9, img: "/images/prop4.jpg", tags: ["Ganga View"] },
+    { id: 5, name: "Heritage Homestay", price: 4000, type: "Apartments", guests: 4, beds: 2, baths: 2, location: "Swarg Ashram", rating: 4.6, img: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Berlin_Villa_Borsig_Tegel_asv2019-08_img09.jpg", tags: [] },
+    { id: 6, name: "Premium Pool Villa", price: 18000, type: "Villas", guests: 8, beds: 4, baths: 4, location: "Narendra Nagar", rating: 5.0, img: "https://upload.wikimedia.org/wikipedia/commons/9/92/Backyardpool.jpg", tags: ["Pool"] },
   ];
 
   const filteredProperties = MOCK_PROPERTIES.filter(property => {
@@ -208,7 +208,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center justify-between py-4 border-y border-forest/10 mb-6 mt-auto">
                       <div className="flex items-center text-sm text-charcoal/80"><Users className="w-4 h-4 mr-2 text-gold"/> {property.guests} Guests</div>
-                      <div className="flex items-center text-sm text-charcoal/80"><Bed className="w-4 h-4 mr-2 text-gold"/> {property.beds} Beds</div>
+                      <div className="flex items-center text-sm text-charcoal/80"><Bed className="w-4 h-4 mr-2 text-gold"/> {property.beds} Rooms</div>
                       <div className="flex items-center text-sm text-charcoal/80"><Bath className="w-4 h-4 mr-2 text-gold"/> {property.baths} Baths</div>
                     </div>
                     <div className="flex space-x-3 mt-auto">
