@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BUSINESS_INFO, NAV_LINKS } from "@/lib/constants";
-import { MapPin, Phone, Mail, Camera, Globe, MessageCircle } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
+import { FaInstagram, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -60,13 +61,13 @@ export default function Footer() {
             <h3 className="font-serif text-lg font-semibold text-gold mb-6">Connect With Us</h3>
             <div className="flex space-x-4">
               <a href="#" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
-                <Camera className="h-5 w-5" />
+                <FaInstagram className="h-5 w-5" />
               </a>
               <a href="#" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
-                <Globe className="h-5 w-5" />
+                <FaWhatsapp className="h-5 w-5" />
               </a>
               <a href="#" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
-                <MessageCircle className="h-5 w-5" />
+                <FaTelegramPlane className="h-5 w-5" />
               </a>
             </div>
           </div>
