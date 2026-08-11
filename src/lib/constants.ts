@@ -57,7 +57,7 @@ export const NAV_LINKS = [
 export const MOCK_PROPERTIES = [
   { id: 1, name: "Panoramic Ganga View Suite", price: 12000, type: "Villas", guests: 6, beds: 3, baths: 3, location: "Tapovan", rating: 4.9, img: "/images/prop1.jpg", tags: ["Ganga View", "Pool"] },
   { id: 2, name: "Serene Forest Retreat", price: 8500, type: "Apartments", guests: 4, beds: 2, baths: 2, location: "Shivpuri", rating: 4.8, img: "/images/prop2.jpg", tags: [] },
-  { id: 3, name: "Classic Ganga View Room", price: 5000, type: "Apartments", guests: 2, beds: 1, baths: 1, location: "Laxman Jhula", rating: 4.7, img: "https://upload.wikimedia.org/wikipedia/commons/7/74/Trayambakeshwar_Temple_VK.jpg", tags: ["Ganga View"] },
+  { id: 3, name: "Classic Ganga View Room", price: 5000, type: "Apartments", guests: 2, beds: 1, baths: 1, location: "Laxman Jhula", rating: 4.7, img: "/images/ganga-window-view.jpg", tags: ["Ganga View"] },
   { id: 4, name: "Riverside Cafe & Stay", price: 6500, type: "Glamping", guests: 2, beds: 1, baths: 1, location: "Neelkanth Road", rating: 4.9, img: "/images/prop4.jpg", tags: ["Ganga View"] },
   { id: 5, name: "Heritage Homestay", price: 4000, type: "Apartments", guests: 4, beds: 2, baths: 2, location: "Swarg Ashram", rating: 4.6, img: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Berlin_Villa_Borsig_Tegel_asv2019-08_img09.jpg", tags: [] },
   { id: 6, name: "Premium Pool Villa", price: 18000, type: "Villas", guests: 8, beds: 4, baths: 4, location: "Narendra Nagar", rating: 5.0, img: "https://upload.wikimedia.org/wikipedia/commons/9/92/Backyardpool.jpg", tags: ["Pool"] },
