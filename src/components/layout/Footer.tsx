@@ -3,6 +3,7 @@ import { BUSINESS_INFO, NAV_LINKS } from "@/lib/constants";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { FaInstagram, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 
+
 export default function Footer() {
   return (
     <footer className="bg-forest text-ivory pt-16 pb-8">
@@ -41,10 +42,13 @@ export default function Footer() {
                 <MapPin className="h-5 w-5 text-gold shrink-0 mt-0.5" />
                 <span className="text-sm text-ivory/80">{BUSINESS_INFO.address}</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-gold shrink-0" />
-                <a href={`tel:${BUSINESS_INFO.phone}`} className="text-sm text-ivory/80 hover:text-white transition-colors">
+              <li className="flex items-center space-x-2 pt-1 flex-wrap gap-y-2">
+                <FaWhatsapp className="h-5 w-5 text-green-400 shrink-0" />
+                <a href={`https://wa.me/91${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-gold hover:underline">
                   {BUSINESS_INFO.phone}
+                </a>
+                <a href={`https://wa.me/91${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="border border-green-500 text-green-400 hover:bg-green-500 hover:text-forest transition-all rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer">
+                  CHAT NOW
                 </a>
               </li>
               <li className="flex items-center space-x-3">
@@ -60,13 +64,13 @@ export default function Footer() {
           <div>
             <h3 className="font-serif text-lg font-semibold text-gold mb-6">Connect With Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
+              <a href="https://instagram.com/cohosts" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
                 <FaInstagram className="h-5 w-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
+              <a href="https://wa.me/919625933365" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
                 <FaWhatsapp className="h-5 w-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
+              <a href="https://t.me/cohosts" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-ivory/10 flex items-center justify-center text-ivory hover:bg-gold hover:text-forest transition-all">
                 <FaTelegramPlane className="h-5 w-5" />
               </a>
             </div>

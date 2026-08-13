@@ -12,9 +12,15 @@ import {
   Briefcase,
   AlertCircle
 } from "lucide-react";
+import ActionModal from "@/components/ui/ActionModal";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [modalState, setModalState] = useState({ isOpen: false, title: "", content: "" });
+
+  const openModal = (title: string, content: string) => {
+    setModalState({ isOpen: true, title, content });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
@@ -25,7 +31,7 @@ export default function AdminDashboard() {
             <ShieldCheck className="h-5 w-5 md:h-6 md:w-6 text-gold" />
             <h2 className="font-serif text-xl md:text-2xl font-bold tracking-wider">ADMIN</h2>
           </div>
-          <button className="md:hidden text-white/50 hover:text-white p-2">
+          <button onClick={() => openModal("Logout", "Are you sure you want to log out from the Admin Dashboard?")} className="md:hidden text-white/50 hover:text-white p-2">
             <LogOut className="w-5 h-5" />
           </button>
         </div>
@@ -33,7 +39,6 @@ export default function AdminDashboard() {
         <nav className="flex md:flex-col overflow-x-auto md:overflow-visible flex-1 p-2 md:p-4 space-x-2 md:space-x-0 md:space-y-1 whitespace-nowrap hide-scrollbar">
           {[
             { id: "overview", name: "Overview", icon: <TrendingUp className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
-            { id: "properties", name: "Properties", icon: <Home className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
             { id: "users", name: "Users", icon: <Users className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
             { id: "staff", name: "Staff", icon: <Briefcase className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
             { id: "finance", name: "Finance", icon: <CreditCard className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
@@ -71,7 +76,6 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {[
             { title: "Total Portfolio Value", val: "₹1.2Cr/mo", sub: "Platform GMV" },
-            { title: "Active Properties", val: "54", sub: "+3 this month" },
             { title: "Live Guests", val: "128", sub: "Currently checked in" },
             { title: "Pending Payouts", val: "₹4.5L", sub: "Processing today" }
           ].map((kpi, i) => (
@@ -105,7 +109,7 @@ export default function AdminDashboard() {
                     <p className="font-medium text-charcoal text-sm">{alert.task}</p>
                     <p className="text-xs text-gray-400 mt-1">{alert.time}</p>
                   </div>
-                  <button className="text-xs font-bold text-forest border border-forest px-3 py-1 rounded hover:bg-forest hover:text-white transition-colors">
+                  <button onClick={() => openModal(`Resolve: ${alert.task}`, `Detailed view for ${alert.task}. Please assign a staff member or contact the guest to resolve this ${alert.type.toLowerCase()} issue.`)} className="text-xs font-bold text-forest border border-forest px-3 py-1 rounded hover:bg-forest hover:text-white transition-colors">
                     Resolve
                   </button>
                 </div>
@@ -117,19 +121,19 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="font-bold text-charcoal text-lg mb-6">Quick Tools</h3>
             <div className="grid grid-cols-2 gap-4">
-              <button className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
+              <button onClick={() => openModal("Onboard Property", "Enter the property details (name, location, owner) to start the onboarding process.")} className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
                 <Home className="w-6 h-6 text-forest mb-3 group-hover:text-gold" />
                 <p className="font-semibold text-charcoal text-sm">Onboard Property</p>
               </button>
-              <button className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
+              <button onClick={() => openModal("Add Owner", "Create a new owner profile and send them an invite link to access their dashboard.")} className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
                 <Users className="w-6 h-6 text-forest mb-3 group-hover:text-gold" />
                 <p className="font-semibold text-charcoal text-sm">Add Owner</p>
               </button>
-              <button className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
+              <button onClick={() => openModal("Assign Staff Task", "Select a staff member and assign them a new housekeeping or maintenance task.")} className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
                 <Briefcase className="w-6 h-6 text-forest mb-3 group-hover:text-gold" />
                 <p className="font-semibold text-charcoal text-sm">Assign Staff Task</p>
               </button>
-              <button className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
+              <button onClick={() => openModal("Approve Payouts", "Review pending payouts for this month and authorize bank transfers.")} className="p-4 border border-gray-200 rounded-xl text-left hover:border-gold hover:shadow-md transition-all group">
                 <CreditCard className="w-6 h-6 text-forest mb-3 group-hover:text-gold" />
                 <p className="font-semibold text-charcoal text-sm">Approve Payouts</p>
               </button>
@@ -137,6 +141,30 @@ export default function AdminDashboard() {
           </div>
         </div>
       </main>
+
+      <ActionModal 
+        isOpen={modalState.isOpen} 
+        onClose={() => setModalState({ ...modalState, isOpen: false })} 
+        title={modalState.title}
+      >
+        <div className="text-charcoal/80 text-lg leading-relaxed mb-6">
+          {modalState.content}
+        </div>
+        <div className="flex justify-end gap-3 mt-8">
+          <button 
+            onClick={() => setModalState({ ...modalState, isOpen: false })}
+            className="px-6 py-2 rounded-lg font-medium text-charcoal bg-gray-100 hover:bg-gray-200 transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={() => setModalState({ ...modalState, isOpen: false })}
+            className="px-6 py-2 rounded-lg font-medium text-white bg-forest hover:bg-forest/90 transition-colors shadow-lg"
+          >
+            Proceed
+          </button>
+        </div>
+      </ActionModal>
     </div>
   );
 }

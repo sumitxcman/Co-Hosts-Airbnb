@@ -42,10 +42,10 @@ export default function Navbar() {
               List Your Property
             </Link>
             <Link 
-              href="/#properties"
+              href="/contact"
               className="px-6 py-2.5 bg-forest text-white text-sm font-medium rounded-full hover:bg-forest/90 transition-all duration-200 shadow-lg shadow-forest/20"
             >
-              Book a Stay
+              Contact Us
             </Link>
           </div>
 
@@ -86,11 +86,11 @@ export default function Navbar() {
                 List Your Property
               </Link>
               <Link 
-                href="/#properties"
+                href="/contact"
                 className="w-full py-4 bg-forest text-white text-center text-lg font-bold rounded-xl hover:bg-forest/90 shadow-lg shadow-forest/20"
                 onClick={() => setIsOpen(false)}
               >
-                Book a Stay
+                Contact Us
               </Link>
             </div>
           </div>

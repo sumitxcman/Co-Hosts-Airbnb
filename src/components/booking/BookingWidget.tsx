@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { Calendar as CalendarIcon, Users, CreditCard } from "lucide-react";
+import ActionModal from "@/components/ui/ActionModal";
 
 export default function BookingWidget({ pricePerNight }: { pricePerNight: number }) {
   const [checkIn, setCheckIn] = useState<string>("");
   const [checkOut, setCheckOut] = useState<string>("");
   const [guests, setGuests] = useState<number>(2);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Simple date diff calculation
   const calculateNights = () => {
@@ -22,6 +24,14 @@ export default function BookingWidget({ pricePerNight }: { pricePerNight: number
   const cleaningFee = 1500;
   const serviceFee = Math.round(pricePerNight * nights * 0.1);
   const total = (pricePerNight * nights) + cleaningFee + serviceFee;
+
+  const handleReserve = () => {
+    if (!checkIn || !checkOut) {
+      alert("Please select check-in and check-out dates.");
+      return;
+    }
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-xl shadow-forest/5 sticky top-28">
@@ -65,11 +75,39 @@ export default function BookingWidget({ pricePerNight }: { pricePerNight: number
         </div>
       </div>
 
-      <button className="w-full py-4 bg-forest text-white font-bold rounded-xl hover:bg-forest/90 transition-colors shadow-lg mb-6">
+      <button 
+        onClick={handleReserve}
+        className="w-full py-4 bg-forest text-white font-bold rounded-xl hover:bg-forest/90 transition-colors shadow-lg mb-6"
+      >
         Reserve
       </button>
 
-      <p className="text-center text-xs text-charcoal/60 mb-6">You won't be charged yet</p>
+      <ActionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title="Booking Request Received!"
+      >
+        <div className="text-charcoal/80 text-lg leading-relaxed mb-6 space-y-4">
+          <p>Thank you for choosing Co-Hosts Rishikesh!</p>
+          <div className="bg-gray-50 p-4 rounded-lg text-sm">
+            <p><strong>Check-in:</strong> {checkIn}</p>
+            <p><strong>Check-out:</strong> {checkOut}</p>
+            <p><strong>Guests:</strong> {guests}</p>
+            <p className="mt-2 text-forest font-bold text-lg">Total: ₹{total.toLocaleString()}</p>
+          </div>
+          <p className="text-sm">Our reservations team will review your request and send a secure payment link to your email shortly.</p>
+        </div>
+        <div className="flex justify-end mt-8">
+          <button 
+            onClick={() => setIsModalOpen(false)}
+            className="px-6 py-2 rounded-lg font-medium text-white bg-forest hover:bg-forest/90 transition-colors shadow-lg w-full"
+          >
+            Done
+          </button>
+        </div>
+      </ActionModal>
+
+      <p className="text-center text-xs text-charcoal/60 mb-6">You won&apos;t be charged yet</p>
 
       {nights > 0 && (
         <div className="space-y-3 mb-6 pb-6 border-b border-gray-100">

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const inter = Inter({
@@ -31,6 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <FloatingWhatsApp />
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

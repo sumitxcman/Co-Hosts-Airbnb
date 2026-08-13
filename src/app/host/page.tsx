@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 import { Calculator, CheckCircle2, TrendingUp, Key, MessageSquare, Sparkles, Wrench, BarChart3 } from "lucide-react";
+import ToastButton from "@/components/ui/ToastButton";
+import Link from "next/link";
+import ActionModal from "@/components/ui/ActionModal";
+import { useRouter } from "next/navigation";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function HostPage() {
+  const router = useRouter();
   const [calcData, setCalcData] = useState({ type: 'Villa', beds: 3, price: 10000, occupancy: 60 });
+  const [modalState, setModalState] = useState({ isOpen: false, title: "", content: "" });
 
+  const openModal = (title: string, content: string) => {
+    setModalState({ isOpen: true, title, content });
+  };
   const calculateRevenue = () => {
     const daily = calcData.price;
     const monthlyDays = 30 * (calcData.occupancy / 100);
@@ -29,19 +39,7 @@ export default function HostPage() {
 
   return (
     <div className="bg-background min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-24 bg-forest text-ivory overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold mb-6">Turn Your Property Into a Profitable Stay</h1>
-          <p className="text-xl text-ivory/80 max-w-2xl mx-auto mb-10">
-            You own the property. We handle everything else. Professional Airbnb management in Rishikesh.
-          </p>
-          <button className="px-8 py-4 bg-gold text-forest font-bold rounded-full hover:bg-white transition-all duration-300">
-            Get Your Free Evaluation
-          </button>
-        </div>
-      </section>
+
 
       {/* Calculator Section */}
       <section className="py-24">
@@ -108,9 +106,15 @@ export default function HostPage() {
                 </div>
               </div>
 
-              <button className="w-full py-4 bg-gold text-forest font-bold rounded-xl hover:bg-white transition-all shadow-lg shadow-black/20">
-                Contact Us Now
-              </button>
+              <a 
+                href="https://wa.me/919625933365"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-50 flex items-center justify-center space-x-2 text-center w-full py-4 bg-gold text-forest font-bold rounded-xl hover:bg-white transition-all shadow-lg shadow-black/20 cursor-pointer"
+              >
+                <FaWhatsapp className="w-6 h-6" />
+                <span>Contact Us Now on WhatsApp</span>
+              </a>
             </div>
           </div>
         </div>
@@ -137,6 +141,30 @@ export default function HostPage() {
           </div>
         </div>
       </section>
+
+      <ActionModal 
+        isOpen={modalState.isOpen} 
+        onClose={() => setModalState({ ...modalState, isOpen: false })} 
+        title={modalState.title}
+      >
+        <div className="text-charcoal/80 text-lg leading-relaxed mb-6">
+          {modalState.content}
+        </div>
+        <div className="flex justify-end gap-3 mt-8">
+          <button 
+            onClick={() => setModalState({ ...modalState, isOpen: false })}
+            className="px-6 py-2 rounded-lg font-medium text-charcoal bg-gray-100 hover:bg-gray-200 transition-colors"
+          >
+            Close
+          </button>
+          <button 
+            onClick={() => setModalState({ ...modalState, isOpen: false })}
+            className="px-6 py-2 rounded-lg font-medium text-white bg-forest hover:bg-forest/90 transition-colors shadow-lg"
+          >
+            Confirm
+          </button>
+        </div>
+      </ActionModal>
     </div>
   );
 }

@@ -14,9 +14,15 @@ import {
   Wrench,
   Star
 } from "lucide-react";
+import ActionModal from "@/components/ui/ActionModal";
 
 export default function OwnerDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [modalState, setModalState] = useState({ isOpen: false, title: "", content: "" });
+
+  const openModal = (title: string, content: string) => {
+    setModalState({ isOpen: true, title, content });
+  };
 
   const STATS = [
     { title: "Total Revenue", value: "₹4,25,000", change: "+12.5%", icon: <Wallet className="text-forest h-6 w-6" /> },
@@ -34,7 +40,7 @@ export default function OwnerDashboard() {
             <h2 className="font-serif text-xl md:text-2xl font-bold text-gold">Owner Portal</h2>
             <p className="text-xs text-ivory/60 mt-1">Ganga View Luxury Villa</p>
           </div>
-          <button className="md:hidden text-ivory hover:text-gold p-2">
+          <button onClick={() => openModal("Settings", "Change your notification preferences, update bank details, or modify your profile.")} className="md:hidden text-ivory hover:text-gold p-2">
             <Settings className="w-5 h-5" />
           </button>
         </div>
@@ -43,7 +49,6 @@ export default function OwnerDashboard() {
           {[
             { id: "overview", name: "Overview", icon: <BarChart3 className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
             { id: "calendar", name: "Calendar", icon: <CalendarDays className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
-            { id: "properties", name: "Properties", icon: <Home className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
             { id: "maintenance", name: "Maintenance", icon: <Wrench className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
             { id: "reviews", name: "Reviews", icon: <MessageSquare className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" /> },
           ].map((item) => (
@@ -63,7 +68,7 @@ export default function OwnerDashboard() {
         </nav>
 
         <div className="hidden md:block p-4 border-t border-ivory/10">
-          <button className="w-full flex items-center px-4 py-3 text-ivory/80 hover:bg-red-500/20 hover:text-red-400 rounded-xl transition-colors">
+          <button onClick={() => openModal("Logout", "Are you sure you want to log out from the Owner Portal?")} className="w-full flex items-center px-4 py-3 text-ivory/80 hover:bg-red-500/20 hover:text-red-400 rounded-xl transition-colors">
             <LogOut className="w-5 h-5 mr-3" />
             Logout
           </button>
@@ -77,7 +82,7 @@ export default function OwnerDashboard() {
             <h1 className="text-3xl font-serif font-bold text-forest">Welcome back, Ananya!</h1>
             <p className="text-charcoal/60 mt-1">Here is what is happening with your property today.</p>
           </div>
-          <button className="bg-forest text-white px-6 py-2 rounded-lg font-medium hover:bg-forest/90 transition-colors">
+          <button onClick={() => openModal("Download Report", "Generate a PDF report of your property's performance for this month.")} className="bg-forest text-white px-6 py-2 rounded-lg font-medium hover:bg-forest/90 transition-colors">
             Download Report
           </button>
         </div>
@@ -106,7 +111,7 @@ export default function OwnerDashboard() {
           <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-serif text-xl font-bold text-forest">Upcoming Bookings</h3>
-              <button className="text-gold font-medium hover:underline text-sm">View Calendar</button>
+              <button onClick={() => openModal("Full Calendar", "View all upcoming bookings, blocked dates, and adjust pricing for your property.")} className="text-gold font-medium hover:underline text-sm">View Calendar</button>
             </div>
             
             <div className="overflow-x-auto">
@@ -177,6 +182,30 @@ export default function OwnerDashboard() {
           </div>
         </div>
       </main>
+
+      <ActionModal 
+        isOpen={modalState.isOpen} 
+        onClose={() => setModalState({ ...modalState, isOpen: false })} 
+        title={modalState.title}
+      >
+        <div className="text-charcoal/80 text-lg leading-relaxed mb-6">
+          {modalState.content}
+        </div>
+        <div className="flex justify-end gap-3 mt-8">
+          <button 
+            onClick={() => setModalState({ ...modalState, isOpen: false })}
+            className="px-6 py-2 rounded-lg font-medium text-charcoal bg-gray-100 hover:bg-gray-200 transition-colors"
+          >
+            Close
+          </button>
+          <button 
+            onClick={() => setModalState({ ...modalState, isOpen: false })}
+            className="px-6 py-2 rounded-lg font-medium text-white bg-gold hover:bg-gold/90 transition-colors shadow-lg text-forest"
+          >
+            Confirm
+          </button>
+        </div>
+      </ActionModal>
     </div>
   );
 }

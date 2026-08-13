@@ -3,28 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BUSINESS_INFO, REVIEWS, MOCK_PROPERTIES } from "@/lib/constants";
-import { Star, MapPin, Users, Bed, Bath, ArrowRight, Phone, Mail, Search, Filter } from "lucide-react";
+import { BUSINESS_INFO, REVIEWS } from "@/lib/constants";
+import { Star, MapPin, Users, Bed, Bath, ArrowRight, Phone, Mail, Search, Filter, MessageCircle } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+import ToastButton from "@/components/ui/ToastButton";
+import ActionModal from "@/components/ui/ActionModal";
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-
-
-  const filteredProperties = MOCK_PROPERTIES.filter(property => {
-    const matchesSearch = property.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          property.location.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    let matchesFilter = true;
-    if (activeFilter !== "All") {
-      if (activeFilter === "Villas" || activeFilter === "Apartments") {
-        matchesFilter = property.type === activeFilter;
-      } else {
-        matchesFilter = property.tags.includes(activeFilter);
-      }
-    }
-    return matchesSearch && matchesFilter;
-  });
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({ name: '', phone: '', email: '', message: '' });
 
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
@@ -53,17 +40,17 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full px-4 sm:px-0">
             <a 
-              href="#properties" 
+              href="/#services" 
               className="px-6 py-4 md:px-8 bg-gold text-forest font-semibold rounded-full hover:bg-white transition-all duration-300 w-full sm:w-auto"
             >
-              Explore Our Stays
+              Our Services
             </a>
-            <Link 
+            <a 
               href="/host" 
               className="px-6 py-4 md:px-8 bg-background/20 backdrop-blur-md text-white border border-white/50 font-semibold rounded-full hover:bg-white hover:text-forest transition-all duration-300 w-full sm:w-auto"
             >
               List Your Property
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -118,106 +105,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FULL PROPERTIES SECTION */}
-      <section id="properties" className="py-16 md:py-24 bg-forest/5 scroll-mt-20">
-        <div className="container mx-auto px-4 text-center mb-12">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-forest mb-4">Discover Exceptional Stays</h1>
-          <p className="text-charcoal/70 text-lg max-w-2xl mx-auto">
-            Experience Rishikesh in luxury. Browse our curated collection of premium properties managed with professional care.
-          </p>
-        </div>
 
-        {/* Filters & Search */}
-        <div className="container mx-auto px-4 mb-12">
-          <div className="bg-white p-4 rounded-xl shadow-lg border border-forest/5 flex flex-col md:flex-row gap-4 items-center max-w-6xl mx-auto">
-            <div className="relative flex-grow w-full">
-              <Search className="absolute left-3 top-3 h-5 w-5 text-charcoal/40" />
-              <input 
-                type="text" 
-                placeholder="Search by location or property name..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold"
-              />
-            </div>
-            <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-              {['All', 'Villas', 'Apartments', 'Ganga View', 'Pool'].map(filter => (
-                <button 
-                  key={filter} 
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-6 py-3 whitespace-nowrap rounded-lg border transition-colors font-medium ${
-                    activeFilter === filter 
-                      ? "bg-gold border-gold text-white" 
-                      : "border-gray-200 text-charcoal hover:border-gold hover:text-gold"
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Property Grid */}
-        <div className="container mx-auto px-4 max-w-7xl">
-          {filteredProperties.length === 0 ? (
-            <div className="text-center py-20">
-              <h3 className="font-serif text-2xl text-charcoal mb-2">No properties found</h3>
-              <p className="text-charcoal/60">Try adjusting your filters or search query.</p>
-              <button 
-                onClick={() => {setActiveFilter("All"); setSearchQuery("");}} 
-                className="mt-6 px-6 py-2 bg-forest text-white rounded-lg hover:bg-forest/90"
-              >
-                Clear Filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProperties.map((property) => (
-                <div key={property.id} className="group bg-white rounded-2xl overflow-hidden shadow-xl shadow-forest/5 border border-forest/5 transition-all duration-300 hover:-translate-y-2 flex flex-col">
-                  <div className="relative h-64 overflow-hidden shrink-0">
-                    <img src={property.img} alt={property.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-gold fill-gold" />
-                      <span className="text-sm font-bold text-forest">{property.rating}</span>
-                    </div>
-                    {/* Tags */}
-                    <div className="absolute bottom-4 left-4 flex gap-2">
-                      {property.tags.map(tag => (
-                        <span key={tag} className="bg-forest/80 backdrop-blur-md text-white text-xs px-2 py-1 rounded-md font-medium">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="p-6 flex-grow flex flex-col">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-serif text-xl font-bold text-forest">{property.name}</h3>
-                      <span className="text-lg font-bold text-forest whitespace-nowrap ml-2">₹{property.price.toLocaleString()}<span className="text-sm font-normal text-charcoal/60">/night</span></span>
-                    </div>
-                    <div className="flex items-center text-charcoal/70 text-sm mb-6">
-                      <MapPin className="w-4 h-4 mr-1 shrink-0" /> {property.location}, Rishikesh
-                    </div>
-                    <div className="flex items-center justify-between py-4 border-y border-forest/10 mb-6 mt-auto">
-                      <div className="flex items-center text-sm text-charcoal/80"><Users className="w-4 h-4 mr-2 text-gold"/> {property.guests} Guests</div>
-                      <div className="flex items-center text-sm text-charcoal/80"><Bed className="w-4 h-4 mr-2 text-gold"/> {property.beds} Rooms</div>
-                      <div className="flex items-center text-sm text-charcoal/80"><Bath className="w-4 h-4 mr-2 text-gold"/> {property.baths} Baths</div>
-                    </div>
-                    <div className="flex space-x-3 mt-auto">
-                      <Link href={`/properties/${property.id}`} className="flex-1 py-3 text-center rounded-xl border border-forest text-forest font-semibold hover:bg-forest hover:text-white transition-colors">
-                        View Details
-                      </Link>
-                      <Link href={`/properties/${property.id}/book`} className="flex-1 py-3 text-center rounded-xl bg-forest text-white font-semibold hover:bg-forest/90 shadow-lg shadow-forest/20 transition-all">
-                        Book Now
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* FULL SERVICES SECTION */}
       <section id="services" className="py-16 md:py-24 bg-background scroll-mt-20">
@@ -309,7 +197,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-charcoal/80 text-sm md:text-base leading-relaxed mb-6 md:mb-8 flex-grow italic">
-                  "{review.content}"
+                  &quot;{review.content}&quot;
                 </p>
                 <div className="flex items-center mt-auto border-t border-forest/10 pt-4 md:pt-6">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-forest/10 rounded-full flex items-center justify-center text-forest font-bold font-serif text-lg md:text-xl mr-3 md:mr-4 shrink-0">
@@ -334,9 +222,9 @@ export default function Home() {
           <p className="text-base md:text-xl text-ivory/90 mb-8 md:mb-10 max-w-2xl mx-auto font-light">
             You own the property. We handle everything else. Professional Airbnb management that maximizes your returns.
           </p>
-          <Link href="/host" className="inline-block w-full sm:w-auto px-8 md:px-10 py-4 bg-gold text-forest font-bold rounded-full hover:bg-white transition-all duration-300 shadow-xl shadow-black/20">
+          <a href="/host" className="inline-block w-full sm:w-auto px-8 md:px-10 py-4 bg-gold text-forest font-bold rounded-full hover:bg-white transition-all duration-300 shadow-xl shadow-black/20">
             List Your Property
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -356,38 +244,57 @@ export default function Home() {
                   <MapPin className="w-6 h-6 text-gold mr-4 shrink-0" />
                   <span className="text-ivory/80">{BUSINESS_INFO.address}</span>
                 </div>
-                <div className="flex items-center">
-                  <Phone className="w-6 h-6 text-gold mr-4 shrink-0" />
-                  <span className="text-ivory/80">{BUSINESS_INFO.phone}</span>
+                <div className="flex items-center space-x-3 pt-2 flex-wrap gap-y-2">
+                  <FaWhatsapp className="w-7 h-7 text-green-400 shrink-0" />
+                  <a
+                    href={`https://wa.me/91${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-gold font-semibold text-lg md:text-xl tracking-wide hover:underline"
+                  >
+                    {BUSINESS_INFO.phone}
+                  </a>
+                  <a
+                    href={`https://wa.me/91${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="border border-green-500 text-green-400 hover:bg-green-500 hover:text-forest transition-all rounded-full px-3.5 py-1 text-xs md:text-sm font-bold tracking-wider uppercase cursor-pointer"
+                  >
+                    CHAT NOW
+                  </a>
                 </div>
                 <div className="flex items-center">
                   <Mail className="w-6 h-6 text-gold mr-4 shrink-0" />
-                  <span className="text-ivory/80">hello@cohosts-rishikesh.com</span>
+                  <a href="mailto:hello@cohosts-rishikesh.com" className="text-ivory/80 hover:text-gold transition-colors">hello@cohosts-rishikesh.com</a>
                 </div>
               </div>
             </div>
             
             <div className="p-8 md:p-10 w-full md:w-3/5">
-              <form className="space-y-4 text-left">
+              <form className="space-y-4 text-left" onSubmit={(e) => {
+                e.preventDefault();
+                setIsContactModalOpen(true);
+                setContactForm({ name: '', phone: '', email: '', message: '' });
+              }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-charcoal mb-1">Name</label>
-                    <input type="text" className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold" />
+                    <label className="block text-sm font-medium text-charcoal mb-1">Name *</label>
+                    <input type="text" required value={contactForm.name} onChange={e => setContactForm({...contactForm, name: e.target.value})} className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-charcoal mb-1">Phone</label>
-                    <input type="text" className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold" />
+                    <input type="text" value={contactForm.phone} onChange={e => setContactForm({...contactForm, phone: e.target.value})} className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-charcoal mb-1">Email</label>
-                  <input type="email" className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold" />
+                  <label className="block text-sm font-medium text-charcoal mb-1">Email *</label>
+                  <input type="email" required value={contactForm.email} onChange={e => setContactForm({...contactForm, email: e.target.value})} className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-charcoal mb-1">Message</label>
-                  <textarea rows={4} className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold"></textarea>
+                  <label className="block text-sm font-medium text-charcoal mb-1">Message *</label>
+                  <textarea rows={4} required value={contactForm.message} onChange={e => setContactForm({...contactForm, message: e.target.value})} className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-gold"></textarea>
                 </div>
-                <button type="button" className="w-full py-3 bg-forest text-white font-bold rounded-xl hover:bg-forest/90 transition-colors">
+                <button type="submit" className="w-full py-3 bg-forest text-white font-bold rounded-xl hover:bg-forest/90 transition-colors">
                   Send Message
                 </button>
               </form>
@@ -395,6 +302,24 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ActionModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+        title="Message Sent Successfully!"
+      >
+        <div className="text-charcoal/80 text-lg leading-relaxed mb-6">
+          Thank you for reaching out to Co-Hosts Rishikesh. We have received your message and our team will get back to you shortly.
+        </div>
+        <div className="flex justify-end mt-8">
+          <button 
+            onClick={() => setIsContactModalOpen(false)}
+            className="px-6 py-2 rounded-lg font-medium text-white bg-forest hover:bg-forest/90 transition-colors shadow-lg w-full"
+          >
+            Done
+          </button>
+        </div>
+      </ActionModal>
 
     </div>
   );
